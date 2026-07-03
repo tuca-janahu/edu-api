@@ -35,10 +35,16 @@ app.use(express.json());
 app.get("/calc", (req, res) => {
   const expr = req.query.expr || "2+2";
 
-  // Uso inseguro proposital para testar a análise SAST
-  const result = eval(expr);
+  if (!/^[0-9+\-*/().\s]+$/.test(expr)) {
+    return res.status(400).json({
+      error: "Expressão inválida. Use apenas números e operadores matemáticos."
+    });
+  }
 
-  res.json({ result });
+  res.json({
+    message: "Expressão validada com segurança.",
+    expression: expr
+  });
 });
 
 // Middleware que registra a duração de cada requisição

@@ -32,15 +32,6 @@ const httpRequestDuration = new client.Histogram({
 
 app.use(express.json());
 
-app.get("/calc", (req, res) => {
-  const expr = req.query.expr || "2+2";
-
-  // Uso inseguro proposital para testar a análise SAST
-  const result = eval(expr);
-
-  res.json({ result });
-});
-
 // Middleware que registra a duração de cada requisição
 app.use((req, res, next) => {
   const start = Date.now();
